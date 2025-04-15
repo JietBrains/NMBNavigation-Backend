@@ -1,0 +1,12 @@
+{
+    "line_width": 5,
+    "line_color": "red",
+    "circle_radius": 20,
+    "font_size": 40,
+    "elevator_width": 5000,
+    "floor_width": 4000,
+    "stair_width": 1000,
+    "overpass_width": 10000,
+
+    "debug_mode": true
+}
