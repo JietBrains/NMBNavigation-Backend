@@ -6,14 +6,16 @@
 
     <resultMap id="BaseResultMap" type="com.swe.nmb_map.entity.Feedback">
             <id property="feedbackId" column="feedback_id" />
-            <result property="userId" column="user_id" />
-            <result property="nodeId" column="node_id" />
-            <result property="content" column="content" />
+            <result property="description" column="description" />
             <result property="createTime" column="create_time" />
             <result property="isDeleted" column="is_deleted" />
+            <result property="phone" column="phone" />
+            <result property="email" column="email" />
+            <result property="images" column="images" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        feedback_id,user_id,node_id,content,create_time,is_deleted
+        feedback_id,description,create_time,is_deleted,phone,email,
+        images
     </sql>
 </mapper>

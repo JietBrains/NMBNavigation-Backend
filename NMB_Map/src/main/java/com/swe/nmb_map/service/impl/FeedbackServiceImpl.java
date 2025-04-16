@@ -6,34 +6,42 @@ import com.swe.nmb_map.service.FeedbackService;
 import com.swe.nmb_map.mapper.FeedbackMapper;
 import com.swe.nmb_map.utils.JwtHelper;
 import com.swe.nmb_map.utils.Result;
+import com.swe.nmb_map.utils.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 /**
-* @author azure
+* @author xavier
 * @description 针对表【feedback】的数据库操作Service实现
-* @createDate 2025-04-09 12:01:40
+* @createDate 2025-04-16 21:44:18
 */
 @Service
 public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback>
     implements FeedbackService{
+
     @Autowired
     private JwtHelper jwtHelper;
 
-    @Autowired
-    private FeedbackMapper feedbackMapper;
+    private final FeedbackMapper feedbackMapper;
+
+    public FeedbackServiceImpl(FeedbackMapper feedbackMapper) {
+        this.feedbackMapper = feedbackMapper;
+    }
+
     @Override
     public Result add(Feedback feedback, String token) {
-        //根据token查询用户id
-        int userId = jwtHelper.getUserId(token).intValue();
         //数据装配
-        feedback.setUserId(userId);
         feedback.setCreateTime(new Date());
 
+        //检查登陆状态
+        if (jwtHelper.isExpiration(token)) {
+            //登陆过期
+            return Result.build(null, ResultCodeEnum.NOTLOGIN).message("登陆状态已过期");
+        }
+        //未过期，放行
         feedbackMapper.insert(feedback);
-
         return Result.ok(null);
     }
 }
