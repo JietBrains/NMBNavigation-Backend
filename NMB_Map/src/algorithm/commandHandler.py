@@ -35,7 +35,8 @@ class CommandHandler:
             load_graph("data/pickle")
             self.loaded = True
         paths = get_shortest_path(start, end)
-        return self.__strandardize_path(paths)
+        self.__strandardize_path(paths)
+        return False
 
     def handle_search_nearest(self, start, type = "toilet"):
         """搜索最近的厕所"""
@@ -44,7 +45,8 @@ class CommandHandler:
             self.loaded = True
         if type == "toilet":
             paths = find_nearest_toilet_path(start)
-            return self.__strandardize_path(paths)
+            self.__strandardize_path(paths)
+            return False
 
     def __strandardize_path(self, paths):
         pathMap = []
@@ -89,10 +91,11 @@ class CommandHandler:
         self.loaded = True
         # 修改为使用 logger 对象
         logger.info("Graph updated and saved.")
+        return False
 
     def run(self):
         while True:
-            command = input("> ").strip().split()
+            command = input().strip().split()
             if not command:
                 continue
             cmd = command[0]
