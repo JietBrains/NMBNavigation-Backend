@@ -1,0 +1,10 @@
+2025-04-16 18:01:44,654 - root - INFO - the program is starting
+2025-04-16 18:01:44,655 - graph - INFO - Graph loaded successfully.
+2025-04-16 18:01:44,656 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-16 18:01:44,656 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-16 18:01:44,656 - commandHandler - INFO - Path search completed.
+2025-04-16 18:04:20,806 - root - INFO - the program is starting
+2025-04-16 18:04:23,824 - graph - INFO - Graph loaded successfully.
+2025-04-16 18:04:23,824 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-16 18:04:23,825 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-16 18:04:23,825 - commandHandler - INFO - Path search completed.
