@@ -11,16 +11,19 @@ import lombok.Data;
 @TableName(value ="feedback")
 @Data
 public class Feedback {
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer feedbackId;
 
-    private Integer userId;
-
-    private Integer nodeId;
-
-    private String content;
+    private String description;
 
     private Date createTime;
+
     @TableLogic
     private Integer isDeleted = 0;
+
+    private String phone;
+
+    private String email;
+
+    private Object images;
 }
