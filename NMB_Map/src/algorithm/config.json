@@ -8,5 +8,5 @@
     "stair_width": 1000,
     "overpass_width": 10000,
 
-    "debug_mode": true
+    "debug_mode": false
 }
