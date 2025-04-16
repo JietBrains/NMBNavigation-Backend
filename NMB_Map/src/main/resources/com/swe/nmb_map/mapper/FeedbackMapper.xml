@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swe.nmb_map.mapper.FeedbackMapper">
+
+    <resultMap id="BaseResultMap" type="com.swe.nmb_map.entity.Feedback">
+            <id property="feedbackId" column="feedback_id" />
+            <result property="userId" column="user_id" />
+            <result property="nodeId" column="node_id" />
+            <result property="content" column="content" />
+            <result property="createTime" column="create_time" />
+            <result property="isDeleted" column="is_deleted" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        feedback_id,user_id,node_id,content,create_time,is_deleted
+    </sql>
+</mapper>
