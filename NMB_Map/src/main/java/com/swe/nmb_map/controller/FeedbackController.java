@@ -21,7 +21,7 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @PostMapping("feedback")
-    public Result addFeedback(@RequestBody Feedback feedback, @RequestHeader String token) {
+    public Result addFeedback(@RequestBody Feedback feedback, @RequestHeader("Authorization") String token) {
         Result result = feedbackService.add(feedback, token);
         return result;
     }
