@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
  * @create: 2025-04-09 21:43
  **/
 @RestController
-@RequestMapping("feedback")
+@RequestMapping("upload")
 @CrossOrigin
 public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    @PostMapping("add")
+    @PostMapping("feedback")
     public Result addFeedback(@RequestBody Feedback feedback, @RequestHeader String token) {
         Result result = feedbackService.add(feedback, token);
         return result;
