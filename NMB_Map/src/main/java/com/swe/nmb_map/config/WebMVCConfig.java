@@ -33,6 +33,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
         // 这里配置该拦截器应用于所有收藏以及反馈操作
         registry.addInterceptor(loginProtectInterceptor)
                 .addPathPatterns("/favorite/**")
-                .addPathPatterns("/feedback/**");
+                .addPathPatterns("/feedback/**")
+                .addPathPatterns("/collect/**");
     }
 }
