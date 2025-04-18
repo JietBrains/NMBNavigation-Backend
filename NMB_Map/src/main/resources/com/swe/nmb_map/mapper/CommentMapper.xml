@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swe.nmb_map.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.swe.nmb_map.entity.Comment">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="userId" column="user_id" />
+            <result property="description" column="description" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,images,create_time,update_time,user_id,
+        description
+    </sql>
+</mapper>

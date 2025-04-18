@@ -37,7 +37,7 @@ public class LoginProtectInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从请求头中获取token
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         //检查是否有效
         boolean expiration = jwtHelper.isExpiration(token);
         //有效，放行

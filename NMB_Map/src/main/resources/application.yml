@@ -16,6 +16,7 @@ spring:
 
 # mybatis-plus???
 mybatis-plus:
+  type-handlers-package: com.baomidou.mybatisplus.extension.handlers
   type-aliases-package: com.swe.nmb_map.entity
   global-config:
     db-config:
