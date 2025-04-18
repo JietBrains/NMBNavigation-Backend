@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("checkLogin")
-    public Result checkLogin(@RequestHeader String token) {
+    public Result checkLogin(@RequestHeader("Authorization") String token) {
 
         boolean expiration = jwtHelper.isExpiration(token);
 
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping("getUserInfo")
-    public Result userInfo(@RequestHeader String token){
+    public Result userInfo(@RequestHeader("Authorization") String token){
         Result result = userService.getUserInfo(token);
         return result;
     }
