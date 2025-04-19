@@ -69,9 +69,24 @@ def init_graph():
         df = excel_file.parse(sheet_name)
         if sheet_name == "toilet":
             handle_toilet_node(df)
+        elif sheet_name == "vendingMachine":
+            handle_vending_machine_node(df)
     logger.info("Graph initialized successfully.")
 
-
+def handle_vending_machine_node(df):
+    """
+    处理自动售货机节点
+    :param df: 自动售货机节点数据
+    :return: None
+    """
+    for _, row in df.iterrows():
+        if row.isnull().any():
+            continue
+        nodeName = row["nodeName"]
+        if "vendingMachine" not in markedNodeMap.keys():
+            markedNodeMap["vendingMachine"] = [nodeName]
+        else:
+            markedNodeMap["vendingMachine"].append(nodeName)
 def handle_toilet_node(df):
     """
     处理厕所节点
@@ -225,16 +240,16 @@ def load_graph(dirPath):
         markedNodeMap = pickle.load(f)
         logger.info("Marked Node Map loaded successfully.")
 
-def find_nearest_toilet_path(start):
+def find_nearest_path(start, type):
     """
-    查找离节点最近的厕所
+    查找离type最近的路径
     :param node: 节点
-    :return: 最近的厕所节点名称
+    :return: 最短路径列表
     """
     nearest_toilet = None
     min_distance = float('inf')
     startNode: Node = target2NodeMap[start]
-    for toilet in markedNodeMap["toilet"]:
+    for toilet in markedNodeMap[type]:
         distance = nx.shortest_path_length(G, source=startNode.id, target=toilet, weight='weight')
         if distance < min_distance:
             min_distance = distance
@@ -242,6 +257,7 @@ def find_nearest_toilet_path(start):
     nodePath = nx.shortest_path(G, source=startNode.id, target=nearest_toilet, weight='weight')
     path_list = __split_list_by_prefix(nodePath)
     return path_list
+
 
 
 def add_node_target_map(node, targets):

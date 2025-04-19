@@ -64,8 +64,8 @@ def process_directory(source_dir, target_dir):
 if __name__ == "__main__":
     import sys
 
-    source_dir = "../map_png/三楼"
-    target_dir = "map_temp"
+    source_dir = "../map"
+    target_dir = "../map"
 
     if not os.path.exists(source_dir):
         print(f"错误: 源目录不存在 {source_dir}")
