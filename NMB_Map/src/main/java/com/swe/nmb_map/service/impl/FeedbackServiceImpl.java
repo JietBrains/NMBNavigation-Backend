@@ -24,11 +24,7 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback>
     @Autowired
     private JwtHelper jwtHelper;
 
-    private final FeedbackMapper feedbackMapper;
-
-    public FeedbackServiceImpl(FeedbackMapper feedbackMapper) {
-        this.feedbackMapper = feedbackMapper;
-    }
+    private FeedbackMapper feedbackMapper;
 
     @Override
     public Result add(Feedback feedback, String token) {

@@ -69,3 +69,60 @@
 2025-04-17 21:26:45,743 - root - INFO - the program is starting
 2025-04-17 21:29:52,072 - root - INFO - the program is starting
 2025-04-17 21:30:42,400 - root - INFO - the program is starting
+2025-04-18 16:27:37,188 - root - INFO - the program is starting
+2025-04-18 16:29:07,663 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:29:07,664 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:29:07,664 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:29:07,664 - commandHandler - INFO - Path search completed.
+2025-04-18 16:36:20,987 - root - INFO - the program is starting
+2025-04-18 16:36:23,590 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:36:23,590 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:36:23,591 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:36:23,591 - commandHandler - INFO - Path search completed.
+2025-04-18 16:41:13,384 - root - INFO - the program is starting
+2025-04-18 16:41:15,320 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:41:15,321 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:41:15,321 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:41:15,321 - commandHandler - INFO - Path search completed.
+2025-04-18 16:41:17,064 - commandHandler - INFO - Path search completed.
+2025-04-18 16:42:14,712 - root - INFO - the program is starting
+2025-04-18 16:42:29,252 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:42:29,253 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:42:29,253 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:42:29,253 - commandHandler - INFO - Path search completed.
+2025-04-18 16:46:44,028 - root - INFO - the program is starting
+2025-04-18 16:47:34,980 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:47:34,980 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:47:34,981 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:48:20,395 - root - INFO - the program is starting
+2025-04-18 16:48:22,176 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:48:22,176 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:48:22,176 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:54:20,666 - root - INFO - the program is starting
+2025-04-18 16:54:21,724 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:54:21,726 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:54:21,726 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:54:21,733 - commandHandler - INFO - Path search completed.
+2025-04-18 16:55:58,791 - root - INFO - the program is starting
+2025-04-18 16:56:00,642 - graph - INFO - Graph loaded successfully.
+2025-04-18 16:56:00,643 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 16:56:00,643 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 16:56:00,649 - commandHandler - INFO - Path search completed.
+2025-04-18 21:05:48,362 - root - INFO - the program is starting
+2025-04-18 21:05:57,591 - graph - INFO - Graph loaded successfully.
+2025-04-18 21:05:57,591 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-18 21:05:57,592 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-18 21:05:57,592 - commandHandler - INFO - Path search completed.
+2025-04-18 21:06:54,247 - commandHandler - INFO - Path search completed.
+2025-04-19 17:59:17,440 - root - INFO - the program is starting
+2025-04-19 17:59:20,273 - graph - INFO - Graph loaded successfully.
+2025-04-19 17:59:20,274 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-19 17:59:20,274 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-19 17:59:20,285 - commandHandler - INFO - Path search completed.
+2025-04-19 17:59:31,115 - commandHandler - INFO - Path search completed.
+2025-04-19 18:00:40,824 - root - INFO - the program is starting
+2025-04-19 18:00:41,883 - graph - INFO - Graph loaded successfully.
+2025-04-19 18:00:41,883 - graph - INFO - Target to Node Map loaded successfully.
+2025-04-19 18:00:41,884 - graph - INFO - Marked Node Map loaded successfully.
+2025-04-19 18:00:41,884 - commandHandler - INFO - Path search completed.
+2025-04-19 18:01:24,466 - commandHandler - INFO - Path search completed.

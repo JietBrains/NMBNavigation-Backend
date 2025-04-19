@@ -40,7 +40,6 @@ public class PythonScriptCaller {
      *
      * @param param1 第一个参数
      * @param param2 第二个参数
-     * @param param3 第三个参数
      * @return Python 脚本的输出字符串
      * @throws Exception 如果通信失败或读取输出时出错
      */
