@@ -1,4 +1,4 @@
-from graph import init_graph, save_graph, load_graph, get_shortest_path, get_node, paint_path, find_nearest_toilet_path
+from graph import init_graph, save_graph, load_graph, get_shortest_path, get_node, paint_path, find_nearest_path
 from node import Node
 import logging
 import json
@@ -38,15 +38,14 @@ class CommandHandler:
         self.__strandardize_path(paths)
         return False
 
-    def handle_search_nearest(self, start, type = "toilet"):
+    def handle_search_nearest(self, start, type):
         """搜索最近的厕所"""
         if not self.loaded:
             load_graph("data/pickle")
             self.loaded = True
-        if type == "toilet":
-            paths = find_nearest_toilet_path(start)
-            self.__strandardize_path(paths)
-            return False
+        paths = find_nearest_path(start, type)
+        self.__strandardize_path(paths)
+        return False
 
     def __strandardize_path(self, paths):
         pathMap = []
