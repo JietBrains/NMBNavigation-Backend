@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("navigation")
 @CrossOrigin
@@ -19,15 +22,19 @@ public class NavigationController {
 
     @GetMapping("target")
     public Result searchTarget(String param1,  String param2) throws Exception {
-        String res = pythonScriptCaller.callPythonScript("search", param1, param2);
-        return Result.ok(res);
+        // 调用 Python 脚本并获取返回值
+        Result<List<Map<String, Object>>> data = pythonScriptCaller.callPythonScript("search", param1, param2);
+        // 返回成功结果
+        return data;
     }
 
     @GetMapping("nearest")
     public Result searchNearest(String param1, int status) throws Exception {
         String param2 = status == 0 ? "toilet" : "vendingMachine";
-        String res = pythonScriptCaller.callPythonScript("nearest", param1, param2);
-        return Result.ok(res);
+        // 调用 Python 脚本并获取返回值
+        Result<List<Map<String, Object>>> data = pythonScriptCaller.callPythonScript("nearest", param1, param2);
+        // 返回成功结果
+        return data;
     }
 
 
