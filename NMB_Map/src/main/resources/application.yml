@@ -14,6 +14,11 @@ spring:
       password: lx2310282802
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个文件大小限制
+      max-request-size: 20MB #多个文件大小限制
+
 # mybatis-plus???
 mybatis-plus:
   type-handlers-package: com.baomidou.mybatisplus.extension.handlers
