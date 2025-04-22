@@ -1,6 +1,9 @@
 package com.swe.nmb_map.utils;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swe.nmb_map.entity.Images;
+import com.swe.nmb_map.mapper.ImagesMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,9 +17,14 @@ import java.util.*;
 @Component
 public class PythonScriptCaller {
 
+    private final ImagesMapper imagesMapper;
     private Process process; // 保存 Python 进程
     private BufferedWriter writer; // 用于向 Python 发送数据
     private BufferedReader reader; // 用于读取 Python 输出
+
+    public PythonScriptCaller(ImagesMapper imagesMapper) {
+        this.imagesMapper = imagesMapper;
+    }
 
     /**
      * 启动 Python 脚本进程。
@@ -95,9 +103,18 @@ public class PythonScriptCaller {
         List<Map<String, Object>> dataList = new ArrayList<>();
         for (Map<String, Object> pythonResult : pythonResultList) {
             Map<String, Object> navigation = new LinkedHashMap<>();
-
+            // get url
+            List<Object> building = List.of(pythonResult.get("building"));
+            List<String> url = new ArrayList<>();
+            for (Object o : building) {
+                String index = o.toString() + ".png";
+                QueryWrapper<Images> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("image", index);
+                Images image = imagesMapper.selectOne(queryWrapper);
+                url.add(image.getUrl());
+            }
             // photo
-            navigation.put("photo", List.of(pythonResult.get("building")));
+            navigation.put("photo", url);
 
             // coordinate
             List<List<Map<String, Integer>>> coordinates = new ArrayList<>();
