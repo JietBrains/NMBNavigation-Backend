@@ -2,6 +2,7 @@ package com.swe.nmb_map.service;
 
 import com.swe.nmb_map.entity.Images;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swe.nmb_map.utils.Result;
 
 /**
 * @author xavier
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ImagesService extends IService<Images> {
 
+    Result view(String name);
 }
