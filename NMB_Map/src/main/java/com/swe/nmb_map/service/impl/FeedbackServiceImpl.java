@@ -24,6 +24,7 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback>
     @Autowired
     private JwtHelper jwtHelper;
 
+    @Autowired
     private FeedbackMapper feedbackMapper;
 
     @Override

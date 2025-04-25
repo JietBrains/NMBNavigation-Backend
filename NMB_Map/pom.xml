@@ -145,6 +145,15 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include> <!-- 包含所有文件 -->
+                    <include>algorithm/**/*</include> <!-- 重复包含 algorithm 目录（可选） -->
+                </includes>
+            </resource>
+        </resources>
     </build>
 
     <packaging>jar</packaging>

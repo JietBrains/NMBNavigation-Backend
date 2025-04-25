@@ -3,6 +3,7 @@ package com.swe.nmb_map.config;
 import com.swe.nmb_map.interceptors.LoginProtectInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,5 +36,13 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addPathPatterns("/favorite/**")
                 .addPathPatterns("/feedback/**")
                 .addPathPatterns("/collect/**");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*") // 使用模式匹配
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowCredentials(true); // 允许凭据
     }
 }

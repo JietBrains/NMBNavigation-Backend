@@ -31,7 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/algorithm/原图/
-/src/algorithm/output/
-/src/algorithm/app.log
-/src/algorithm/utils/output_image.jpg
+/src/main/resources/algorithm/原图/
+/src/main/resources/algorithm/output/
+/src/main/resources/algorithm/app.log
+/src/main/resources/algorithm/utils/output_image.jpg

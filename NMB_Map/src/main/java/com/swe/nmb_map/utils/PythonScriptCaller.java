@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swe.nmb_map.entity.Images;
 import com.swe.nmb_map.mapper.ImagesMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,38 +13,22 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.BufferedWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.*;
 
 @Component
 public class PythonScriptCaller {
+    private static final String SEARCH_URL = "http://localhost:5432/";
 
+    @Autowired
     private final ImagesMapper imagesMapper;
-    private Process process; // 保存 Python 进程
-    private BufferedWriter writer; // 用于向 Python 发送数据
-    private BufferedReader reader; // 用于读取 Python 输出
 
     public PythonScriptCaller(ImagesMapper imagesMapper) {
         this.imagesMapper = imagesMapper;
     }
 
-    /**
-     * 启动 Python 脚本进程。
-     */
-    @PostConstruct
-    public void init() throws Exception {
-        // 启动 Python 脚本
-        ProcessBuilder processBuilder = new ProcessBuilder(
-                "/Users/xavier/IdeaProjects/NMBNavigation-Backend/NMB_Map/myenv/bin/python",
-                "src/algorithm/main.py" // 指定脚本路径
-        );
-        process = processBuilder.start();
-
-        // 初始化输入和输出流
-        writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-        reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        System.out.println("Python script started.");
-    }
 
     /**
      * 调用 Python 脚本并返回结果。
@@ -54,29 +39,47 @@ public class PythonScriptCaller {
      * @throws Exception 如果通信失败或读取输出时出错
      */
     public Result<List<Map<String, Object>>> callPythonScript(String param1, String param2, String param3) throws Exception {
-
-        // 检查 Python 进程是否启动成功
-        if (!process.isAlive()) {
-            throw new RuntimeException("Python process is not running.");
+        System.out.println("param1 = " + param1 + ", param2 = " + param2 + ", param3 = " + param3);
+        String url;
+        if ("search".equals(param1)) {
+            // 对参数进行URL编码
+            String param2Encoded = URLEncoder.encode(param2, "UTF-8");
+            String param3Encoded = URLEncoder.encode(param3, "UTF-8");
+            url = SEARCH_URL + param1 + "?startPoint=" + param2Encoded + "&endPoint=" + param3Encoded;
+        } else {
+            String param2Encoded = URLEncoder.encode(param2, "UTF-8");
+            String param3Encoded = URLEncoder.encode(param3, "UTF-8");
+            url = SEARCH_URL + param1 + "?startPoint=" + param2Encoded + "&type=" + param3Encoded;
         }
 
-        // 向 Python 脚本发送参数
-        String input = param1 + " " + param2 + " " + param3 + "\n";
-        writer.write(input);
-        writer.flush(); // 确保数据被发送到 Python
-        System.out.println("Sent parameters to Python script: " + input.trim());
+        // 发送HTTP请求获取结果（使用Java 11+的HttpClient）
+        String result;
+        try {
+            java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(new URI(url))
+                    .GET()
+                    .build();
 
-        // 读取 Python 脚本的输出
-        String result = reader.readLine();
-        if (result == null) {
-            throw new RuntimeException("Failed to read output from Python script.");
+            java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+            // 检查HTTP状态码
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("HTTP请求失败: 状态码 " + response.statusCode());
+            }
+
+            result = response.body();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("无效的URL格式", e);
         }
 
+        System.out.println(result);
         // 转换 Python 输出为目标格式
         List<Map<String, Object>> data = convertToData(result.trim());
 
         // 构建最终响应
         return Result.ok(data); // 使用 Result.ok() 方法封装数据
+//        return Result.ok(null);
     }
 
     /**
@@ -139,24 +142,5 @@ public class PythonScriptCaller {
         return dataList;
     }
 
-    /**
-     * 关闭 Python 脚本进程。
-     */
-    @PreDestroy
-    public void close() {
-        try {
-            if (writer != null) {
-                writer.close();
-            }
-            if (reader != null) {
-                reader.close();
-            }
-            if (process != null) {
-                process.destroy(); // 终止 Python 进程
-            }
-            System.out.println("Python script terminated.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }
