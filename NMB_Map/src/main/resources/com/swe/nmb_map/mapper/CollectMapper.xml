@@ -8,10 +8,10 @@
             <id property="collectId" column="collect_id" />
             <result property="userId" column="user_id" />
             <result property="collectObj" column="collect_obj" />
-            <result property="isDeleted" column="is_deleted" />
+            <result property="top" column="top" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        collect_id,user_id,collect_obj,is_deleted
+        collect_id,user_id,collect_obj,top
     </sql>
 </mapper>

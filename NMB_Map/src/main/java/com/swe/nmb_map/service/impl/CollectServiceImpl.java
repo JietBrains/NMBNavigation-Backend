@@ -15,19 +15,16 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
-* @author xavier
-* @description 针对表【collect】的数据库操作Service实现
-* @createDate 2025-04-17 16:32:44
-*/
+ * @author xavier
+ * @description 针对表【collect】的数据库操作Service实现
+ * @createDate 2025-04-17 16:32:44
+ */
 @Service
 public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
-    implements CollectService{
+        implements CollectService{
     @Autowired
     private JwtHelper jwtHelper;
     @Autowired
@@ -45,6 +42,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         Collect collect = new Collect();
         collect.setUserId(userId);
         collect.setCollectObj(name);
+        collect.setTop(0);
         try {
             // 插入记录
             collectMapper.insert(collect);
@@ -75,8 +73,9 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
 
     @Override
     public Result getAll(String token) {
-        // 根据token查询用户id
+        // 根据 token 查询用户 id
         int userId = jwtHelper.getUserId(token).intValue();
+
         // 构造删除条件
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId); // 匹配 user_id
@@ -84,8 +83,13 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         // 查询所有符合条件的收藏记录
         List<Collect> collectList = collectMapper.selectList(queryWrapper);
 
+        // 对 collectList 进行排序：top 为 1 的排在前面
+        List<Collect> sortedCollectList = collectList.stream()
+                .sorted(Comparator.comparingInt(collect -> collect.getTop() == 1 ? 0 : 1)) // top=1 排前面
+                .toList(); // 转换为不可变列表
+
         // 提取 collect_obj 字段值
-        List<String> collects = collectList.stream()
+        List<String> collects = sortedCollectList.stream()
                 .map(Collect::getCollectObj) // 获取每个 Collect 对象的 collect_obj 字段值
                 .filter(Objects::nonNull)    // 过滤掉 null 值
                 .toList();                   // 转换为不可变列表
@@ -93,12 +97,33 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         // 返回结果
         Map<String, List<String>> collectInfo = Map.of("collects", collects);
         return Result.ok(collectInfo);
+    }
 
+    @Override
+    public Result alterTop(String token, String name) {
+        QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", jwtHelper.getUserId(token));
+        queryWrapper.eq("collect_obj", name);
+        Collect collect = collectMapper.selectOne(queryWrapper);
+        collect.setTop(collect.getTop() == 0 ? 1 : 0);
+        collectMapper.updateById(collect);
+        return Result.ok(null);
+    }
+
+    @Override
+    public Result judgement(String token, String name) {
+        int userId = jwtHelper.getUserId(token).intValue();
+        QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<Collect> list = collectMapper.selectList(queryWrapper);
+        for (Collect collect : list) {
+            if (collect.getCollectObj().equals(name)) {
+                boolean success = true;
+                return Result.ok(success);
+            }
+        }
+        return Result.ok(false);
     }
 
 
 }
-
-
-
-

@@ -7,17 +7,16 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * @TableName collect
+ * @TableName history
  */
-@TableName(value ="collect")
+@TableName(value ="history")
 @Data
-public class Collect {
-    @TableId(type = IdType.AUTO)
-    private Integer collectId;
+public class History {
+    private Integer id;
 
     private Integer userId;
 
-    private String collectObj;
+    private String name;
 
-    private Integer top;
+    private Integer isDeleted;
 }

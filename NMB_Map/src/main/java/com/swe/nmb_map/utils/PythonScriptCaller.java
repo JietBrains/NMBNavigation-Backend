@@ -91,7 +91,6 @@ public class PythonScriptCaller {
      */
     private List<Map<String, Object>> convertToData(String pythonOutput) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-
         // Step 1: 替换单引号为双引号
         String cleanedOutput = pythonOutput.replace("'", "\"");
 

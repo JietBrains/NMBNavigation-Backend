@@ -30,4 +30,16 @@ public class CollectController {
         Result result =  collectService.getAll(token);
         return result;
     }
+
+    @PostMapping("top")
+    public Result alterTop(@RequestHeader("Authorization") String token, String name) {
+        Result result = collectService.alterTop(token, name);
+        return result;
+    }
+
+    @GetMapping("judgement")
+    public Result judgement(@RequestHeader("Authorization") String token, String name) {
+        Result result = collectService.judgement(token, name);
+        return result;
+    }
 }
