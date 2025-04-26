@@ -14,4 +14,6 @@ public interface HistoryService extends IService<History> {
     Result save(String token, String name);
 
     Result getAll(String token);
+
+    Result delete(String token);
 }

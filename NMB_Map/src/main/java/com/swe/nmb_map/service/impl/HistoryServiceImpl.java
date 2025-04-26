@@ -7,9 +7,11 @@ import com.swe.nmb_map.service.HistoryService;
 import com.swe.nmb_map.mapper.HistoryMapper;
 import com.swe.nmb_map.utils.JwtHelper;
 import com.swe.nmb_map.utils.Result;
+import com.swe.nmb_map.utils.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +31,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result save(String token, String name) {
         // 根据 token 查询用户 id
-        int userId = jwtHelper.getUserId(token).intValue();
+        Integer userId = jwtHelper.getUserId(token).intValue();
 
         // 检查是否已存在相同的 name 记录
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
@@ -44,10 +46,25 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             return Result.ok(null);
         }
 
-        // 如果不存在相同的记录，则插入新记录
+        // 查询当前用户的记录总数
+        QueryWrapper<History> countQueryWrapper = new QueryWrapper<>();
+        countQueryWrapper.eq("user_id", userId);
+        int historyCount = historyMapper.selectCount(countQueryWrapper).intValue();
+
+        // 如果已有 10 条记录，则删除最早的一条记录
+        if (historyCount >= 10) {
+            QueryWrapper<History> deleteQueryWrapper = new QueryWrapper<>();
+            deleteQueryWrapper.eq("user_id", userId)
+                    .orderByAsc("create_date") // 按创建时间升序排序
+                    .last("LIMIT 1");         // 只删除最早的一条记录
+            historyMapper.delete(deleteQueryWrapper);
+        }
+
+        // 插入新记录
         History history = new History();
         history.setUserId(userId);
         history.setName(name);
+        history.setCreateDate(new Date());
         historyMapper.insert(history);
 
         // 返回成功
@@ -62,6 +79,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
         // 构造查询条件
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("is_deleted", 0);
 
         // 查询所有符合条件的记录
         List<History> historyList = historyMapper.selectList(queryWrapper);
@@ -73,6 +91,15 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
         // 返回结果
         return Result.ok(names);
+    }
+
+    @Override
+    public Result delete(String token) {
+        int uerId = jwtHelper.getUserId(token).intValue();
+        QueryWrapper<History> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", uerId);
+        historyMapper.delete(queryWrapper);
+        return Result.ok(null);
     }
 }
 

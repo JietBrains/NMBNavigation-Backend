@@ -23,4 +23,10 @@ public class HistoryController {
         Result result = historyService.getAll(token);
         return result;
     }
+
+    @DeleteMapping("delete")
+    public Result delete(@RequestHeader("Authorization") String token) {
+        Result result = historyService.delete(token);
+        return result;
+    }
 }
