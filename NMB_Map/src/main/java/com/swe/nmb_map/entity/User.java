@@ -11,18 +11,18 @@ import lombok.Data;
 @TableName(value ="user")
 @Data
 public class User {
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer userId;
 
     private String username;
 
     private String password;
 
-    private String email;
-
-    private Object role;
-
     private Date registrationTime;
     @TableLogic
     private Integer isDeleted = 0;
+
+    private String nickname;
+
+    private String avatarurl;
 }

@@ -21,7 +21,7 @@ public class CommentController {
     }
 
     @GetMapping("view")
-    public Result view(@RequestHeader("Authorization") String token, String name) {
-        return commentService.view(token, name);
+    public Result view(String name) {
+        return commentService.view(name);
     }
 }

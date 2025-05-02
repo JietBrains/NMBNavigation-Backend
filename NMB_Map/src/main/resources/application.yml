@@ -4,7 +4,7 @@ server:
   servlet:
     context-path: /
 
-# ?????
+# mysql config
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -16,20 +16,24 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB #单个文件大小限制
-      max-request-size: 20MB #多个文件大小限制
+      max-file-size: 10MB # single file size limit
+      max-request-size: 20MB # multiple file size limit
 
-# mybatis-plus???
+# mybatis-plus config
 mybatis-plus:
   type-handlers-package: com.baomidou.mybatisplus.extension.handlers
   type-aliases-package: com.swe.nmb_map.entity
   global-config:
     db-config:
-      logic-delete-field: isDeleted  #??????
-      id-type: auto #???????
+      logic-delete-field: isDeleted  # logical delete
+      id-type: auto
 
 #jwt??
 jwt:
   token:
-    tokenExpiration: 120 #????,????
-    tokenSignKey: nmb_map123456  #???????? ???
+    tokenExpiration: 120 # two hours
+    tokenSignKey: nmb_map123456  # sign key
+
+wx:
+  appid: wx779e1909e689a563
+  secret: 0c44946ccebda3da66cc9adaa543c852

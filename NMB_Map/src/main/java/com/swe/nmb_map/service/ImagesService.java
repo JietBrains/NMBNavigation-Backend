@@ -12,4 +12,6 @@ import com.swe.nmb_map.utils.Result;
 public interface ImagesService extends IService<Images> {
 
     Result view(String name);
+
+    Result search(String name);
 }

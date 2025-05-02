@@ -9,6 +9,9 @@ import com.swe.nmb_map.utils.Result;
 import com.swe.nmb_map.utils.ResultCodeEnum;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
 * @author xavier
 * @description 针对表【images】的数据库操作Service实现
@@ -35,6 +38,23 @@ public class ImagesServiceImpl extends ServiceImpl<ImagesMapper, Images>
         } else {
             return Result.ok(images.getUrl());
         }
+    }
+
+    @Override
+    public Result search(String name) {
+        QueryWrapper<Images> query = new QueryWrapper<>();
+        query.eq("image", name + ".png");
+        Images target = imagesMapper.selectOne(query);
+
+        String floorName = name.substring(0, 2);
+        QueryWrapper<Images> newQuery = new QueryWrapper<>();
+        newQuery.eq("image", floorName + ".png");
+        Images floor = imagesMapper.selectOne(newQuery);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("target", target == null ? "" : target.getUrl());
+        map.put("floor", floor.getUrl());
+        return Result.ok(map);
     }
 }
 

@@ -32,17 +32,17 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("checkUserName")
-    public Result checkUserName(String username) { //默认为param形式
-        Result result = userService.checkUserName(username);
-        return result;
-    }
-
-    @PostMapping("regist")
-    public Result regist(@RequestBody User user) {
-        Result result = userService.regist(user);
-        return result;
-    }
+//    @PostMapping("checkUserName")
+//    public Result checkUserName(String username) { //默认为param形式
+//        Result result = userService.checkUserName(username);
+//        return result;
+//    }
+//
+//    @PostMapping("regist")
+//    public Result regist(@RequestBody User user) {
+//        Result result = userService.regist(user);
+//        return result;
+//    }
 
     @GetMapping("checkLogin")
     public Result checkLogin(@RequestHeader("Authorization") String token) {
@@ -57,9 +57,9 @@ public class UserController {
         return Result.ok(null);
     }
 
-    @GetMapping("getUserInfo")
-    public Result userInfo(@RequestHeader("Authorization") String token){
-        Result result = userService.getUserInfo(token);
-        return result;
-    }
+//    @GetMapping("getUserInfo")
+//    public Result userInfo(@RequestHeader("Authorization") String token){
+//        Result result = userService.getUserInfo(token);
+//        return result;
+//    }
 }

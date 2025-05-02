@@ -32,4 +32,10 @@ public class ImageController {
         Result result = imagesService.view(name);
         return result;
     }
+
+    @GetMapping("/search")
+    public Result search(String name) {
+        Result result = imagesService.search(name);
+        return result;
+    }
 }

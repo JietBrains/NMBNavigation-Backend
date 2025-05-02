@@ -33,9 +33,12 @@ public class WebMVCConfig implements WebMvcConfigurer {
         // 登录保护拦截器，用于确保访问受保护资源前用户已登录
         // 这里配置该拦截器应用于所有收藏以及反馈操作
         registry.addInterceptor(loginProtectInterceptor)
-                .addPathPatterns("/favorite/**")
                 .addPathPatterns("/feedback/**")
-                .addPathPatterns("/collect/**");
+                .addPathPatterns("/collect/**")
+                .addPathPatterns("/search/**")
+                .addPathPatterns("/comment/**")
+                .addPathPatterns("/upload/**")
+                .excludePathPatterns("/comment/view");
     }
 
     @Override

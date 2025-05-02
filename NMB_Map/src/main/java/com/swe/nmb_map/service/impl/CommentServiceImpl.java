@@ -2,15 +2,14 @@ package com.swe.nmb_map.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.swe.nmb_map.entity.Collect;
 import com.swe.nmb_map.entity.Comment;
+import com.swe.nmb_map.entity.User;
+import com.swe.nmb_map.mapper.UserMapper;
 import com.swe.nmb_map.service.CommentService;
 import com.swe.nmb_map.mapper.CommentMapper;
 import com.swe.nmb_map.utils.JwtHelper;
 import com.swe.nmb_map.utils.Result;
-import com.swe.nmb_map.utils.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +30,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public Result comment(String token, Comment comment) {
         // 根据token查询用户id
@@ -45,12 +47,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     }
 
     @Override
-    public Result view(String token, String name) {
-        // 根据token查询用户id
-        int userId = jwtHelper.getUserId(token).intValue();
+    public Result view(String name) {
         // 构造查询条件
         QueryWrapper<Comment> queryWrapper =  new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId); // 匹配 user_id
         queryWrapper.eq("name", name);
 
         List<Comment> commentList = commentMapper.selectList(queryWrapper);
@@ -76,6 +75,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                     } else {
                         commentData.put("images", ""); // 如果为空，返回空字符串
                     }
+                    int userId = comment.getUserId();
+                    User user = userMapper.selectById(userId);
+                    String username = user.getUsername();
+                    String avatar = user.getAvatarurl();
+
+                    commentData.put("user", username);
+                    commentData.put("avatar", avatar);
+                    commentData.put("time", comment.getCreateTime());
 
                     return commentData;
                 })

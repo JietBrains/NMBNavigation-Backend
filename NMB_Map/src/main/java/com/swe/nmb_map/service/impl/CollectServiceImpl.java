@@ -3,7 +3,6 @@ package com.swe.nmb_map.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swe.nmb_map.entity.Collect;
-import com.swe.nmb_map.entity.Comment;
 import com.swe.nmb_map.mapper.CommentMapper;
 import com.swe.nmb_map.service.CollectService;
 import com.swe.nmb_map.mapper.CollectMapper;
@@ -33,7 +32,6 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     @Autowired
     private CommentMapper commentMapper;
-
     @Override
     public Result add(String Authorization, String name) {
         // 根据token查询用户id
@@ -57,6 +55,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     public Result delete(String Authorization, String name) {
         // 根据token查询用户id
         int userId = jwtHelper.getUserId(Authorization).intValue();
+
         // 构造删除条件
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId); // 匹配 user_id
@@ -101,8 +100,10 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
 
     @Override
     public Result alterTop(String token, String name) {
+        int userId = jwtHelper.getUserId(token).intValue();
+
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", jwtHelper.getUserId(token));
+        queryWrapper.eq("user_id", userId);
         queryWrapper.eq("collect_obj", name);
         Collect collect = collectMapper.selectOne(queryWrapper);
         collect.setTop(collect.getTop() == 0 ? 1 : 0);
@@ -113,6 +114,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     @Override
     public Result judgement(String token, String name) {
         int userId = jwtHelper.getUserId(token).intValue();
+
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         List<Collect> list = collectMapper.selectList(queryWrapper);

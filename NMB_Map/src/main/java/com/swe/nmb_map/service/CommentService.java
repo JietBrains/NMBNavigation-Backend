@@ -13,5 +13,5 @@ public interface CommentService extends IService<Comment> {
 
     Result comment(String token, Comment comment);
 
-    Result view(String token, String name);
+    Result view(String name);
 }

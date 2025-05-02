@@ -7,13 +7,11 @@ import com.swe.nmb_map.service.HistoryService;
 import com.swe.nmb_map.mapper.HistoryMapper;
 import com.swe.nmb_map.utils.JwtHelper;
 import com.swe.nmb_map.utils.Result;
-import com.swe.nmb_map.utils.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author xavier
@@ -95,9 +93,9 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
     @Override
     public Result delete(String token) {
-        int uerId = jwtHelper.getUserId(token).intValue();
+        int userId = jwtHelper.getUserId(token).intValue();
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", uerId);
+        queryWrapper.eq("user_id", userId);
         historyMapper.delete(queryWrapper);
         return Result.ok(null);
     }
