@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @TableName collect
  */
@@ -20,4 +22,6 @@ public class Collect {
     private String collectObj;
 
     private Integer top;
+
+    private Date createTime;
 }

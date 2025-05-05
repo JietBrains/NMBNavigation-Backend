@@ -41,6 +41,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         collect.setUserId(userId);
         collect.setCollectObj(name);
         collect.setTop(0);
+        collect.setCreateTime(new Date());
         try {
             // 插入记录
             collectMapper.insert(collect);
@@ -82,9 +83,23 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         // 查询所有符合条件的收藏记录
         List<Collect> collectList = collectMapper.selectList(queryWrapper);
 
-        // 对 collectList 进行排序：top 为 1 的排在前面
+        // 对 collectList 进行排序：
+        // 1. top = 1 的排在前面；
+        // 2. 在 top = 1 中按 createTime 降序排列（最新的在前）；
+        // 3. top = 0 的排在后面，不进行额外排序
         List<Collect> sortedCollectList = collectList.stream()
-                .sorted(Comparator.comparingInt(collect -> collect.getTop() == 1 ? 0 : 1)) // top=1 排前面
+                .sorted((c1, c2) -> {
+                    // 先比较 top 字段：top 不同时，top=1 的在前
+                    if (c1.getTop() != c2.getTop()) {
+                        return Integer.compare(c2.getTop(), c1.getTop()); // 1 排前面
+                    }
+                    // 如果 top 相同且都为 1，则按 createTime 降序排列
+                    if (c1.getTop() == 1 && c2.getTop() == 1) {
+                        return c2.getCreateTime().compareTo(c1.getCreateTime()); // 新的在前
+                    }
+                    // top=0 的不特别排序
+                    return 0;
+                })
                 .toList(); // 转换为不可变列表
 
         // 提取 collect_obj 字段值
@@ -107,6 +122,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         queryWrapper.eq("collect_obj", name);
         Collect collect = collectMapper.selectOne(queryWrapper);
         collect.setTop(collect.getTop() == 0 ? 1 : 0);
+        collect.setCreateTime(new Date());
         collectMapper.updateById(collect);
         return Result.ok(null);
     }
