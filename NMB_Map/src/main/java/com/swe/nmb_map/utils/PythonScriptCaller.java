@@ -46,10 +46,16 @@ public class PythonScriptCaller {
             String param2Encoded = URLEncoder.encode(param2, "UTF-8");
             String param3Encoded = URLEncoder.encode(param3, "UTF-8");
             url = SEARCH_URL + param1 + "?startPoint=" + param2Encoded + "&endPoint=" + param3Encoded;
-        } else {
+        } else if ("nearest".equals(param1)) {
             String param2Encoded = URLEncoder.encode(param2, "UTF-8");
             String param3Encoded = URLEncoder.encode(param3, "UTF-8");
             url = SEARCH_URL + param1 + "?startPoint=" + param2Encoded + "&type=" + param3Encoded;
+        } else {
+            String param1Encoded = URLEncoder.encode(param1, "UTF-8");
+            String param2Encoded = URLEncoder.encode(param2, "UTF-8");
+            String param3Encoded = URLEncoder.encode(param3, "UTF-8");
+            url = SEARCH_URL+ "touch?floor=" + param1Encoded + "&x=" + param2Encoded + "&y=" + param3Encoded;
+            System.out.println(url);
         }
 
         // 发送HTTP请求获取结果（使用Java 11+的HttpClient）
@@ -75,7 +81,12 @@ public class PythonScriptCaller {
 
         System.out.println(result);
         // 转换 Python 输出为目标格式
-        List<Map<String, Object>> data = convertToData(result.trim());
+        List<Map<String, Object>> data;
+        if (param1.equals("search") || param1.equals("nearest")) {
+            data = convertToData(result.trim());
+        } else {
+            data = convertToNodeData(result.trim());
+        }
 
         // 构建最终响应
         return Result.ok(data); // 使用 Result.ok() 方法封装数据
@@ -139,6 +150,33 @@ public class PythonScriptCaller {
         }
 
         return dataList;
+    }
+
+    /**
+     * 将 Python 返回的节点信息字符串（如 [{"nodeName":"E504","x":515,"y":6304}]）
+     * 转换为 List<Map<String, Object>> 格式。
+     *
+     * @param pythonOutput Python 脚本输出的字符串
+     * @return 包含节点信息的列表
+     * @throws Exception 如果解析失败
+     */
+    private List<Map<String, Object>> convertToNodeData(String pythonOutput) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Step 1: 替换单引号为双引号（如果有的话）
+        String cleanedOutput = pythonOutput.replace("'", "\"");
+
+        // Step 2: 解析 JSON 字符串为 List<Map<String, Object>>
+        List<Map<String, Object>> nodeList = objectMapper.readValue(
+                cleanedOutput,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Map.class)
+        );
+
+        if (nodeList == null || nodeList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return nodeList;
     }
 
 
