@@ -18,6 +18,7 @@ spring:
     multipart:
       max-file-size: 10MB # single file size limit
       max-request-size: 20MB # multiple file size limit
+      enabled: true
 
 # mybatis-plus config
 mybatis-plus:

@@ -7,11 +7,13 @@ import com.swe.nmb_map.entity.User;
 import com.swe.nmb_map.mapper.UserMapper;
 import com.swe.nmb_map.service.CommentService;
 import com.swe.nmb_map.mapper.CommentMapper;
-import com.swe.nmb_map.utils.JwtHelper;
-import com.swe.nmb_map.utils.Result;
+import com.swe.nmb_map.utils.*;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ImageUploadUtil imageUploadUtil;
 
     @Override
     public Result comment(String token, Comment comment) {
@@ -95,6 +100,53 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
 
         return Result.ok(responseData);
 
+    }
+
+    @Override
+    public Result upload(String token, String name ,String description, ArrayList<MultipartFile> images) {
+        // 根据token查询用户id
+        int userId = jwtHelper.getUserId(token).intValue();
+        ArrayList<String> imageUrls = new ArrayList<>();
+        for (MultipartFile image : images) {
+            try {
+                if (!isImage(image)) {
+                    return Result.build(null, ResultCodeEnum.FAIL).message("上传文件不是图片");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for (MultipartFile image : images) {
+            try {
+
+                String imageUrl = imageUploadUtil.uploadAndGetUrl(image);
+                imageUrls.add(imageUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Comment realComment = new Comment();
+        realComment.setName(name);
+        realComment.setDescription(description);
+        realComment.setUserId(userId);
+        realComment.setImages(imageUrls);
+        realComment.setCreateTime(new Date());
+        realComment.setUpdateTime(new Date());
+
+        // 插入记录
+        commentMapper.insert(realComment);
+        return Result.ok(null);
+    }
+
+    public boolean isImage(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return false;
+        }
+
+        Tika tika = new Tika();
+        String detectedType = tika.detect(file.getBytes());
+        return detectedType.startsWith("image/");
     }
 }
 

@@ -38,6 +38,17 @@ public class ImageUploadUtil {
         saveImageToDatabase(file.getOriginalFilename(), imageUrl);
     }
 
+    public String uploadAndGetUrl(MultipartFile file) throws IOException {
+        // Step 1: 调用图床 API 上传图片
+        String imageUrl = uploadToImageBed(file);
+
+        // Step 2: 将图片文件名与 URL 存储到数据库
+        saveImageToDatabase(file.getOriginalFilename(), imageUrl);
+
+        // Step 3: 返回图片 URL
+        return imageUrl;
+    }
+
     /**
      * 调用图床 API 上传图片
      *
