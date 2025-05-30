@@ -45,7 +45,10 @@ public class UserController {
 //    }
 
     @GetMapping("checkLogin")
-    public Result checkLogin(@RequestHeader("Authorization") String token) {
+    public Result checkLogin(@RequestHeader(value="Authorization", required = false) String token) {
+        if (token == null) {
+            return Result.build(null, ResultCodeEnum.NOTLOGIN);
+        }
 
         boolean expiration = jwtHelper.isExpiration(token);
 

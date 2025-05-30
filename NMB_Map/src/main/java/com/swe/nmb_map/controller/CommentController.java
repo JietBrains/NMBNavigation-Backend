@@ -32,7 +32,6 @@ public class CommentController {
                           @RequestParam(value = "images", required = false) MultipartFile[] images) {
         // 如果 images 为 null，则创建一个空的 ArrayList
         ArrayList<MultipartFile> imageList = (images == null) ? new ArrayList<>() : new ArrayList<>(Arrays.asList(images));
-
         return commentService.upload(token, name, description, imageList);
     }
 
