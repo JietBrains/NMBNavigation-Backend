@@ -78,13 +78,17 @@ public class WxuserServiceImpl extends ServiceImpl<WxuserMapper, Wxuser>
         Wxuser user = wxuserMapper.selectOne(lambdaQueryWrapper);
 
         user.setNickname(nickname);
-        String avatar = imageUploadUtil.uploadAndGetUrl(file);
-        user.setAvatar(avatar);
-        wxuserMapper.updateById(user);
-
         Map<String, Object> data = new HashMap<>();
-        data.put("avatar", user.getAvatar());
         data.put("nickname", user.getNickname());
+
+        user.setNickname(nickname);
+        if (file != null) {
+            String avatar = imageUploadUtil.uploadAndGetUrl(file);
+            user.setAvatar(avatar);
+        }
+        wxuserMapper.updateById(user);
+        data.put("avatar", user.getAvatar());
+
 
         return Result.ok(data);
     }

@@ -93,7 +93,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
 
                     commentData.put("user", username);
                     commentData.put("avatar", avatar);
-//                    commentData.put("time", comment.getCreateTime());
+                    commentData.put("time", comment.getCreateTime());
                     commentData.put("userId", user.getId());
 
                     return commentData;
