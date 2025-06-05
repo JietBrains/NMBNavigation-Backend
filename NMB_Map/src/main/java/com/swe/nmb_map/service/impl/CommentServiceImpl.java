@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swe.nmb_map.entity.Comment;
 import com.swe.nmb_map.entity.User;
+import com.swe.nmb_map.entity.Wxuser;
 import com.swe.nmb_map.mapper.UserMapper;
+import com.swe.nmb_map.mapper.WxuserMapper;
 import com.swe.nmb_map.service.CommentService;
 import com.swe.nmb_map.mapper.CommentMapper;
 import com.swe.nmb_map.utils.*;
@@ -36,12 +38,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     private UserMapper userMapper;
 
     @Autowired
+    private WxuserMapper wxuserMapper;
+
+    @Autowired
     private ImageUploadUtil imageUploadUtil;
 
     @Override
     public Result comment(String token, Comment comment) {
         // 根据token查询用户id
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
         comment.setUserId(userId);
         comment.setCreateTime(new Date());
         comment.setUpdateTime(new Date());
@@ -80,14 +85,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                     } else {
                         commentData.put("images", ""); // 如果为空，返回空字符串
                     }
-                    int userId = comment.getUserId();
-                    User user = userMapper.selectById(userId);
-                    String username = user.getUsername();
-                    String avatar = user.getAvatarurl();
+                    String userId = comment.getUserId();
+//                    User user = userMapper.selectById(userId);
+                    Wxuser user = wxuserMapper.selectById(userId);
+                    String username = user.getNickname();
+                    String avatar = user.getAvatar();
 
                     commentData.put("user", username);
                     commentData.put("avatar", avatar);
-                    commentData.put("time", comment.getCreateTime());
+//                    commentData.put("time", comment.getCreateTime());
+                    commentData.put("userId", user.getId());
 
                     return commentData;
                 })
@@ -105,7 +112,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     @Override
     public Result upload(String token, String name ,String description, ArrayList<MultipartFile> images) {
         // 根据token查询用户id
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
         ArrayList<String> imageUrls = new ArrayList<>();
         for (MultipartFile image : images) {
             try {

@@ -29,7 +29,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result save(String token, String name) {
         // 根据 token 查询用户 id
-        Integer userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
 
         // 检查是否已存在相同的 name 记录
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
@@ -72,7 +72,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result getAll(String token) {
         // 根据 token 查询用户 id
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
 
         // 构造查询条件
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
@@ -93,7 +93,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
     @Override
     public Result delete(String token) {
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
         QueryWrapper<History> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         historyMapper.delete(queryWrapper);

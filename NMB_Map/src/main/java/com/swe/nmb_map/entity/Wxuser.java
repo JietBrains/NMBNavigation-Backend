@@ -6,22 +6,16 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
- * @TableName collect
+ * @TableName wxuser
  */
-@TableName(value ="collect")
+@TableName(value ="wxuser")
 @Data
-public class Collect {
-    @TableId(type = IdType.AUTO)
-    private Integer collectId;
+public class Wxuser {
+    @TableId
+    private String id;
 
-    private String userId;
+    private String nickname;
 
-    private String collectObj;
-
-    private Integer top;
-
-    private Date createTime;
+    private String avatar;
 }

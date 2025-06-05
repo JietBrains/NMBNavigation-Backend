@@ -25,27 +25,42 @@ public class JwtHelper {
     private  String tokenSignKey;  //当前程序签名秘钥
 
     //生成token字符串
-    public  String createToken(Long userId) {
+//    public  String createToken(Long userId) {
+//        System.out.println("tokenExpiration = " + tokenExpiration);
+//        System.out.println("tokenSignKey = " + tokenSignKey);
+//        String token = Jwts.builder()
+//
+//                .setSubject("YYGH-USER")
+//                .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration*1000*60)) //单位分钟
+//                .claim("userId", userId)
+//                .signWith(SignatureAlgorithm.HS512, tokenSignKey)
+//                .compressWith(CompressionCodecs.GZIP)
+//                .compact();
+//        return token;
+//    }
+
+    public String createToken(String userId) {
         System.out.println("tokenExpiration = " + tokenExpiration);
         System.out.println("tokenSignKey = " + tokenSignKey);
-        String token = Jwts.builder()
 
+        String token = Jwts.builder()
                 .setSubject("YYGH-USER")
-                .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration*1000*60)) //单位分钟
-                .claim("userId", userId)
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration * 1000 * 60)) // 单位分钟
+                .claim("userId", userId) // 这里直接传入字符串即可
                 .signWith(SignatureAlgorithm.HS512, tokenSignKey)
                 .compressWith(CompressionCodecs.GZIP)
                 .compact();
+
         return token;
     }
 
     //从token字符串获取userid
-    public  Long getUserId(String token) {
+    public String getUserId(String token) {
         if(StringUtils.isEmpty(token)) return null;
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
-        Integer userId = (Integer)claims.get("userId");
-        return userId.longValue();
+        String userId = (String)claims.get("userId");
+        return userId;
     }
 
     //判断token是否有效

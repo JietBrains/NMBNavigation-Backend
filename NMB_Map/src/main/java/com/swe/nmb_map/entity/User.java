@@ -14,10 +14,6 @@ public class User {
     @TableId(type = IdType.AUTO)
     private Integer userId;
 
-    private String username;
-
-    private String password;
-
     private Date registrationTime;
     @TableLogic
     private Integer isDeleted = 0;

@@ -14,7 +14,7 @@ public class History {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private Integer userId;
+    private String userId;
 
     private String name;
     @TableLogic

@@ -35,7 +35,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     @Override
     public Result add(String Authorization, String name) {
         // 根据token查询用户id
-        int userId = jwtHelper.getUserId(Authorization).intValue();
+        String userId = jwtHelper.getUserId(Authorization);
 
         Collect collect = new Collect();
         collect.setUserId(userId);
@@ -55,7 +55,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     @Override
     public Result delete(String Authorization, String name) {
         // 根据token查询用户id
-        int userId = jwtHelper.getUserId(Authorization).intValue();
+        String userId = jwtHelper.getUserId(Authorization);
 
         // 构造删除条件
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
@@ -74,7 +74,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     @Override
     public Result getAll(String token) {
         // 根据 token 查询用户 id
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
 
         // 构造删除条件
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
@@ -115,7 +115,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
 
     @Override
     public Result alterTop(String token, String name) {
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
 
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
@@ -129,7 +129,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
 
     @Override
     public Result judgement(String token, String name) {
-        int userId = jwtHelper.getUserId(token).intValue();
+        String userId = jwtHelper.getUserId(token);
 
         QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);

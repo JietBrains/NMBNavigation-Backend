@@ -27,7 +27,7 @@ public class Comment {
 
     private Date updateTime;
 
-    private Integer userId;
+    private String userId;
 
     private String description;
 }

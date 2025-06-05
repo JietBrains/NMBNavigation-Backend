@@ -29,15 +29,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Autowired
     private JwtHelper jwtHelper;
 
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
     @Override
     public Result login(User user) {
         // 根据账号和昵称查询数据
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getUsername, user.getUsername());
         lambdaQueryWrapper.eq(User::getNickname, user.getNickname());
         User existingUser = userMapper.selectOne(lambdaQueryWrapper);
 
@@ -50,11 +45,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 根据用户ID生成token
-        String token = jwtHelper.createToken(Long.valueOf(existingUser.getUserId()));
+//        String token = jwtHelper.createToken(Long.valueOf(existingUser.getUserId()));
 
         // 将token封装到result返回
         Map<String, Object> data = new HashMap<>();
-        data.put("token", token);
+//        data.put("token", token);
         return Result.ok(data);
     }
 }

@@ -2,12 +2,18 @@ package com.swe.nmb_map.controller;
 
 
 import com.swe.nmb_map.entity.User;
+import com.swe.nmb_map.entity.Wxuser;
 import com.swe.nmb_map.service.UserService;
+import com.swe.nmb_map.service.WxuserService;
 import com.swe.nmb_map.utils.JwtHelper;
 import com.swe.nmb_map.utils.Result;
 import com.swe.nmb_map.utils.ResultCodeEnum;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * @program: NMB_Map
@@ -21,16 +27,22 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private WxuserService wxuserService;
 
     @Autowired
     private JwtHelper jwtHelper;
 
     @PostMapping("login")
-    public Result login(@RequestBody User user) { //请求体类型
-        Result result = userService.login(user);
+    public Result login(@RequestBody Wxuser user) { //请求体类型
+        Result result = wxuserService.login(user);
         return result;
     }
+
+//    @PostMapping("login")
+//    public Result login(@RequestBody User user) { //请求体类型
+//        Result result = userService.login(user);
+//        return result;
+//    }
 
 //    @PostMapping("checkUserName")
 //    public Result checkUserName(String username) { //默认为param形式
@@ -60,9 +72,17 @@ public class UserController {
         return Result.ok(null);
     }
 
-//    @GetMapping("getUserInfo")
-//    public Result userInfo(@RequestHeader("Authorization") String token){
-//        Result result = userService.getUserInfo(token);
-//        return result;
-//    }
+    @GetMapping("getInfo")
+    public Result userInfo(@RequestHeader("Authorization") String token){
+        Result result = wxuserService.getInfo(token);
+        return result;
+    }
+
+    @PostMapping("updateInfo")
+    public Result updateInfo(@RequestHeader("Authorization") String token,
+                             @RequestHeader String nickname,
+                             @RequestHeader("file") MultipartFile file) throws IOException {
+        Result result = wxuserService.updateInfo(token, nickname, file);
+        return result;
+    }
 }
