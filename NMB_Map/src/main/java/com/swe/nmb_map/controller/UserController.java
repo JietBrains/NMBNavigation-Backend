@@ -80,9 +80,10 @@ public class UserController {
 
     @PostMapping("updateInfo")
     public Result updateInfo(@RequestHeader("Authorization") String token,
-                             @RequestHeader String nickname,
+                             String nickName,
                              @RequestHeader("file") MultipartFile file) throws IOException {
-        Result result = wxuserService.updateInfo(token, nickname, file);
+        Result result = wxuserService.updateInfo(token, nickName, file);
+        System.out.println(nickName);
         return result;
     }
 }
