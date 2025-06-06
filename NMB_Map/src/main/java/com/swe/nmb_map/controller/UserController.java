@@ -32,9 +32,15 @@ public class UserController {
     @Autowired
     private JwtHelper jwtHelper;
 
+//    @PostMapping("login")
+//    public Result login(@RequestBody Wxuser user) { //请求体类型
+//        Result result = wxuserService.login(user);
+//        return result;
+//    }
+
     @PostMapping("login")
-    public Result login(@RequestBody Wxuser user) { //请求体类型
-        Result result = wxuserService.login(user);
+    public Result login(@RequestHeader String code) { //请求体类型
+        Result result = wxuserService.login(code);
         return result;
     }
 
